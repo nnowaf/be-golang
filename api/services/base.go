@@ -7,8 +7,11 @@ import (
 )
 
 type Service interface {
-	PanggilKategoriX() []model.Kategori
+	PanggilKategoriX(page model.Halaman) []model.Kategori
+	PanggilDepartmentX() []model.Department
 	PanggilProdukX() []model.Produk
+	BanyakKategoriX(page model.Halaman) int64
+	PostDepartmentX(data model.Department)
 }
 
 type service struct {
