@@ -16,6 +16,7 @@ func BeRouter(app fiber.Router, s services.Service) {
 
 	app.Get("/api/kategori/list", ui.ListKategori(s))
 	app.Get("/api/department/list", ui.ListDepartment(s))
+	app.Get("/api/department/:id", ui.GetDeptById(s))
 
 	app.Post("/api/kategori/post", ui.ListKategoriTable(s))
 	app.Post("/api/department/post", ui.PostDepartment(s))

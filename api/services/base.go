@@ -11,7 +11,8 @@ type Service interface {
 	PanggilDepartmentX() []model.Department
 	PanggilProdukX() []model.Produk
 	BanyakKategoriX(page model.Halaman) int64
-	PostDepartmentX(data model.Department)
+	PostDepartmentX(data model.Department) (model.Department, error)
+	PanggilDeptXById(id int) model.Department
 }
 
 type service struct {

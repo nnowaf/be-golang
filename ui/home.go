@@ -3,7 +3,10 @@ package ui
 import (
 	"gobe/api/model"
 	"gobe/api/services"
+	"gobe/api/utils"
+	"strconv"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -67,15 +70,37 @@ func PostDepartment(s services.Service) fiber.Handler {
 		if err := c.BodyParser(&req); err != nil {
 			return err
 		}
-		s.PostDepartmentX(req)
 
-		return c.JSON(req)
+		var validate = validator.New()
+		err := validate.Struct(req)
+		if err != nil {
+			return c.Status(405).JSON(utils.ValidateStruct(err))
+		}
+		data, err := s.PostDepartmentX(req)
+		if err != nil {
+			return c.Status(405).JSON(err)
+		}
+
+		return c.JSON(data)
 	}
 }
 
 func ListDepartment(s services.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		data := s.PanggilDepartmentX()
+		return c.JSON(data)
+	}
+}
+
+func GetDeptById(s services.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		idDept, err := strconv.Atoi(c.Params("id"))
+
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+
+		data := s.PanggilDeptXById(idDept)
 		return c.JSON(data)
 	}
 }
